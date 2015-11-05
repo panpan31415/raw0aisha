@@ -46,5 +46,37 @@ namespace project.DAL
                 }
             }
         }
+        public int GetNewId()
+        {
+            using (var connection = new MySqlConnection(
+                "server= localhost; database= stackoverflow; uid= root; pwd= princess786"))
+            {
+                connection.Open();
+                var cmd = new MySqlCommand("select max(id) from post", connection);
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    if (rdr.HasRows && rdr.Read())
+                    {
+                        return rdr.GetInt32(0) + 1;
+                    }
+                }
+            }
+            return 1;
+        }
+
+        public void Add(Post post)
+        {
+            post.Id = GetNewId();
+            using (var connection = new MySqlConnection(
+                "server= localhost;database=stackoverflow;uid=root;pwd=princess786"))
+            {
+                connection.Open();
+                var cmd = new MySqlCommand(
+                    "insert into post(id,body) values(@id, @body)", connection);
+                cmd.Parameters.AddWithValue("@id", post.Id);
+                cmd.Parameters.AddWithValue("@body", post.Body);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
