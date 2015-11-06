@@ -25,7 +25,7 @@ namespace project.Models
             {
             return new PostModel
             {
-                Url= _urlHelper.Link("PostApi", new {id= post.Id}),
+                Url= _urlHelper.Link("PostApi", new {PostId= post.Id}),
                 Body = post.Body,
                 Score= post.Score
             };

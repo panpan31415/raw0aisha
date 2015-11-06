@@ -21,20 +21,21 @@ namespace project.Controllers
                 .Select(annotation => ModelFactory.Create(annotation));
         }
 
-        /*public HttpResponseMessage post([FromBody] AnnotationModel model)
+        public HttpResponseMessage annotation([FromBody] AnnotationModel model)
         {
             var helper = new UrlHelper(Request);
-            var annotation = _modelFactory.Parse(model);
+            var annotation = ModelFactory.Parse(model);
             _annoRepository.Add(annotation);
-            return Request.CreateResponse(HttpStatusCode.Created, _modelFactory.Create(annotation));
-        }*/
+            return Request.CreateResponse(HttpStatusCode.Created, ModelFactory.Create(annotation));
+        }
 
-       /* public HttpResponseMessage put([FromBody] AnnotationModel model)
+        public HttpResponseMessage put(int PostId, [FromBody] AnnotationModel model)
         {
             var helper = new UrlHelper(Request);
-            var annotation = _modelFactory.Parse(model);
-            _hisRepository.Update(annotation);
+            var annotation = ModelFactory.Parse(model);
+            annotation.PostId = PostId;
+            _annoRepository.Update(annotation);
             return Request.CreateResponse(HttpStatusCode.OK);
-        }*/
+        }
     }
 }
