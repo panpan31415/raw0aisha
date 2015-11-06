@@ -16,12 +16,17 @@ namespace project.Models
         {
             _urlHelper = new UrlHelper(request);
         }
+
+        public ModelFactory()
+        {
+        }
+
         public PostModel Create(Post post)
             {
             return new PostModel
             {
                 Url= _urlHelper.Link("PostApi", new {id= post.Id}),
-                Body= post.Body,
+                Body = post.Body,
                 Score= post.Score
             };
             }
@@ -39,7 +44,7 @@ namespace project.Models
         {
             return new AnnotationModel
             {
-                Url = _urlHelper.Link("AnnotationApi", new { id = annotation.UserId }),
+                Url = _urlHelper.Link("AnnotationApi", new { PostId = annotation.PostId }),
                 Body = annotation.Body,
                 Date = annotation.Date
             };

@@ -12,7 +12,7 @@ namespace project.DAL
         {
             // create the SQL statement
             var sql = string.Format(
-                    "select id, body, score from post limit {0} offset {1}",
+                    "select OwnerUserId, post.id, title, score from post  limit {0} offset {1}",
                     limit, offset);
             // fetch the selected movies
             foreach (var post in ExecuteQuery(sql))
@@ -37,9 +37,10 @@ namespace project.DAL
                         // return a movie object and yield
                         yield return new Post
                         {
-                            Id = rdr.GetInt32(0),
-                            Body = rdr.GetString(1),
-                            Score = rdr.GetInt32(2),
+                            OId = rdr.GetInt32(0),
+                            Id = rdr.GetInt32(1),
+                            Body = rdr.GetString(2),
+                            Score = rdr.GetInt32(3),
 
                         };
                     }

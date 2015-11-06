@@ -12,22 +12,29 @@ namespace project.Controllers
 {
     public class AnnotationsController : BaseApiController
     {
-        AnnotationRepository _annotationRepository = new AnnotationRepository();
-        public IEnumerable<AnnotationModel> Getannotation()
+         AnnotationRepository _annoRepository = new AnnotationRepository();
+        //ModelFactory _modelFactory = new ModelFactory();
+        public IEnumerable<AnnotationModel> Get()
         {
             var helper = new UrlHelper(Request);
-            return _annotationRepository.GetAllannotation()
+            return _annoRepository.GetAllannotation()
                 .Select(annotation => ModelFactory.Create(annotation));
         }
 
-        public HttpResponseMessage Post([FromBody] AnnotationModel model)
+        /*public HttpResponseMessage post([FromBody] AnnotationModel model)
         {
             var helper = new UrlHelper(Request);
-            var annotation = ModelFactory.Parse(model);
-            _annotationRepository.Add(annotation);
-            return Request.CreateResponse(
-                HttpStatusCode.Created
-                , ModelFactory.Create(annotation));
-        }
+            var annotation = _modelFactory.Parse(model);
+            _annoRepository.Add(annotation);
+            return Request.CreateResponse(HttpStatusCode.Created, _modelFactory.Create(annotation));
+        }*/
+
+       /* public HttpResponseMessage put([FromBody] AnnotationModel model)
+        {
+            var helper = new UrlHelper(Request);
+            var annotation = _modelFactory.Parse(model);
+            _hisRepository.Update(annotation);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }*/
     }
 }

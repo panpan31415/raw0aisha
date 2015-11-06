@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using MySql.Data.MySqlClient;
 
 namespace project.DAL.Rewrittable
 {
@@ -11,7 +12,7 @@ namespace project.DAL.Rewrittable
         {
             // create the SQL statement
             var sql = string.Format(
-                    "select userId, date, body from annotation limit {0} offset {1}",
+                    "select annotation.postID, body, date from annotation limit {0} offset {1}",
                     limit, offset);
             // fetch the selected movies
             foreach (var anno in ExecuteQuery(sql))
@@ -36,22 +37,21 @@ namespace project.DAL.Rewrittable
                         // return a movie object and yield
                         yield return new Annotation
                         {
-                            UserId = rdr.GetInt32(0),
-                            Date = rdr.GetDateTime(1),
-                            Body = rdr.GetString(2),
-                        };
+                           PostId = rdr.GetInt32(0),
+                            Body = rdr.GetString(1),
+                            Date = rdr.GetDateTime(2),
+                       };
                     }
                 }
             }
         }
-
         public int GetNewId()
         {
             using (var connection = new MySqlConnection(
                 "server= localhost; database= stackoverflow; uid= root; pwd= princess786"))
             {
                 connection.Open();
-                var cmd = new MySqlCommand("select max(userId) from annotation", connection);
+                var cmd = new MySqlCommand("select max(postID) from annotation", connection);
                 using (var rdr = cmd.ExecuteReader())
                 {
                     if (rdr.HasRows && rdr.Read())
@@ -65,15 +65,14 @@ namespace project.DAL.Rewrittable
 
         public void Add(Annotation annotation)
         {
-            annotation.UserId = GetNewId();
+            annotation.PostId = GetNewId();
             using (var connection = new MySqlConnection(
                 "server= localhost;database=stackoverflow;uid=root;pwd=princess786"))
             {
                 connection.Open();
                 var cmd = new MySqlCommand(
-                    "insert into annotation(userid,date,body) values(@userid,@date, @body)", connection);
-                cmd.Parameters.AddWithValue("@userid", annotation.UserId);
-                cmd.Parameters.AddWithValue("@userdate", annotation.Date);
+                    "insert into post(body) values( @body)", connection);
+                //cmd.Parameters.AddWithValue("@id", annotation.Id);
                 cmd.Parameters.AddWithValue("@body", annotation.Body);
                 cmd.ExecuteNonQuery();
             }
