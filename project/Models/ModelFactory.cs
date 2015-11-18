@@ -1,4 +1,5 @@
 ﻿using project.DAL;
+using project.DAL.ReadOnly;
 using project.DAL.Rewrittable;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,27 @@ namespace project.Models
             {
                 Body = model.Body,
                 Date = model.Date
+            };
+        }
+        public CommentModel Create(Comment comment)
+        {
+            return new CommentModel
+            {
+                PostId = comment.PostId,
+                creationDate = comment.CreationDate,
+                text = comment.Text,
+                userid = comment.Userid
+            };
+        }
+
+        public Comment Parse(CommentModel model)
+        {
+            return new Comment
+            {
+                Userid = model.userid,
+                CreationDate = model.creationDate,
+                PostId = model.postId,
+                Text = model.text
             };
         }
 

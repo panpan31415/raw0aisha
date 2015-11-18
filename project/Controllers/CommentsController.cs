@@ -1,19 +1,57 @@
-﻿using project.DAL.ReadOnly;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Routing;
+using project.Controllers;
+using project.DAL.ReadOnly;
 
-namespace project.Controllers
+namespace Service.Controllers
 {
-    public class CommentsController : ApiController
+    public class CommentsController : BaseApiController
     {
-       CommentRepository _commentRepository = new CommentRepository();
-        public IEnumerable<Comment> Get()
+
+
+        CommentRepository<Comment> _commentRepo = new CommentRepository<Comment>();
+
+        public IEnumerable<CommentModel> Get()
         {
-            return _commentRepository.GetAll();
+            var helper = new UrlHelper(Request);
+            return _commentRepo.GetAll().Select(comment => ModelFactory.Create(comment));//HERESS
         }
+        public HttpResponseMessage Get(int id)
+        {
+
+            var comment = _commentRepo.getById(id);
+            if (comment == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, comment);
+        }
+
+        //public HttpResponseMessage Post([FromBody] CommentModel model)
+        //{
+        //    var helper = new UrlHelper(Request);
+        //    _commentRepo.addComment(ModelFactory.Parse(model));
+        //    return Request.CreateResponse(HttpStatusCode.Created, "a new comment has been added into database");
+        //}
+        public HttpResponseMessage Put([FromBody] CommentModel model)
+        {
+            var helper = new UrlHelper(Request);
+            // _commentRepo.addComment(ModelFactory.Parse(model));
+            return Request.CreateResponse(HttpStatusCode.Created, "a new comment has been added into database");
+        }
+
+        //public HttpResponseMessage Put(int id, [FromBody] UserModel model)
+        //{
+        //    var helper = new UrlHelper(Request);
+        //    var comment = ModelFactory.Parse(model);
+        //    comment.Id = id;
+        //    _commentRepo.Update(comment);
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
+
     }
 }
