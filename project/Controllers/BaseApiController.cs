@@ -20,7 +20,7 @@ namespace project.Controllers
                     _modelFactory = new ModelFactory(Request);
                 }
                 return _modelFactory;
-                    }
+            }
         }
     }
 }

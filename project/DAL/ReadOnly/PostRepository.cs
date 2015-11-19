@@ -6,7 +6,7 @@ using System.Web;
 
 namespace project.DAL
 {
-    public class PostRepository : IRepository
+    public class PostRepository
     {
         public IEnumerable<Post> GetAll(int limit = 10, int offset = 0)
         {

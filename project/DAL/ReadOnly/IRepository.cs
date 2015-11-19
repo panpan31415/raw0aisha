@@ -11,12 +11,7 @@ namespace project.DAL
         /// <param name="limit">specify the size of the returned collection </param>
         /// <param name="offset">specify the start point of cursor in a table that will be selected.</param>
         /// <returns>a collection of records that selected from database </returns>
-        IEnumerable<T> getAll(int limit = 10, int offset = 0);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="attribut_value"></param>
-        /// <returns></returns>
-        IEnumerable<T> getBySingleAttribute(Tuple<string, object> attribut_value);
+        IEnumerable<T> get(int limit = 10, int offset = 0);
+        T getById(int id);
     }
 }

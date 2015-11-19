@@ -7,23 +7,23 @@ using System.Web.Http.Routing;
 using project.Controllers;
 using project.DAL.ReadOnly;
 
-namespace Service.Controllers
+namespace Project.Controllers
 {
     public class CommentsController : BaseApiController
     {
 
 
-        CommentRepository<Comment> _commentRepo = new CommentRepository<Comment>();
+        CommentRepository _commentRepository = new CommentRepository();
 
         public IEnumerable<CommentModel> Get()
         {
             var helper = new UrlHelper(Request);
-            return _commentRepo.GetAll().Select(comment => ModelFactory.Create(comment));//HERESS
+            return _commentRepository.get().Select(comment => ModelFactory.Create(comment));//HERESS
         }
         public HttpResponseMessage Get(int id)
         {
 
-            var comment = _commentRepo.getById(id);
+            var comment = _commentRepository.getById(id);
             if (comment == null)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
